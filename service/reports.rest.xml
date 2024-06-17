@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- General Guideline Verbs: GET=find, POST=create/do, PUT=store (create or update), PATCH=update, DELETE=delete  -->
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/rest-api-3.xsd"
+          name="report-builder" displayName="Reports REST API" version="${moqui_version}"
+          description="CRUD for Reports">
+
+    <resource name="reports">
+        <method type="get"><entity name="dataDocuments" operation="list"/></method>
+        <method type="post">
+            <service name="org.moqui.impl.EntityServices.create#DataDocument"/>
+        </method>
+
+        <id name="dataDocumentId">
+            <method type="get"><entity name="dataDocuments" masterName="default" operation="one"/></method>
+            <method type="put">
+                <service name="org.moqui.impl.EntityServices.update#DataDocument"/>
+            </method>
+
+            <resource name="fields">
+                <method type="get">
+                    <entity name="moqui.entity.document.DataDocumentField" operation="list"/>
+                </method>
+                <method type="post">
+                    <service name="org.moqui.impl.EntityServices.create#DataDocumentField"/>
+                </method>
+                <method type="put">
+                    <service name="org.moqui.impl.EntityServices.update#DataDocumentField"/>
+                </method>
+                <method type="delete">
+                    <entity name="moqui.entity.document.DataDocumentField" operation="delete"/>
+                </method>
+            </resource>
+
+            <resource name="conditions">
+                <method type="get">
+                    <entity name="moqui.entity.document.DataDocumentCondition" operation="list"/>
+                </method>
+                <method type="post">
+                    <entity name="moqui.entity.document.DataDocumentCondition" operation="create"/>
+                </method>
+                <method type="put">
+                    <entity name="moqui.entity.document.DataDocumentCondition" operation="update"/>
+                </method>
+                <method type="delete">
+                    <entity name="moqui.entity.document.DataDocumentCondition" operation="delete"/>
+                </method>
+            </resource>
+
+            <resource name="clone">
+                <method type="post">
+                    <service name="org.moqui.impl.EntityServices.clone#DataDocument"/>
+                </method>
+            </resource>
+
+            <resource name="view">
+                <method type="get">
+                    <service name="co.hotwax.reports.ReportServices.get#DataDocumentReport"/>
+                </method>
+            </resource>
+        </id>
+    </resource>
+
+    <resource name="entity">
+        <method type="get">
+            <service name="co.hotwax.reports.ReportServices.get#AllEntityInfo"/>
+        </method>
+
+        <id name="entityName">
+            <resource name="fields">
+                <method type="get">
+                    <service name="co.hotwax.reports.ReportServices.get#EntityFields"/>
+                </method>
+            </resource>
+
+            <resource name="relationships">
+                <method type="get">
+                    <service name="co.hotwax.reports.ReportServices.get#EntityRelationships"/>
+                </method>
+            </resource>
+        </id>
+    </resource>
+</resource>
