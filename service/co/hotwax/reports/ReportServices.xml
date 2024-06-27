@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
 
-    <!-- TODO add comments and descriptions wherever required -->
-    <service verb="get" noun="DataDocumentReport">
-        <description>Service to fetch data from the Data Document Report.</description>
-        <in-parameters>
-            <parameter name="dataDocumentId" required="true"/>
-        </in-parameters>
-        <out-parameters>
-            <parameter name="entityValueList" type="List"/>
-        </out-parameters>
-        <actions>
-            <set field="entityName" from="'DataDocument.' + dataDocumentId"/>
-            <!-- TODO test with search form inputs -->
-            <entity-find entity-name="${entityName}" list="entityValueList" cache="false">
-                <search-form-inputs/></entity-find>
-        </actions>
-    </service>
-
-    <service verb="get" noun="AllEntityInfo">
+    <service verb="get" noun="AllEntityInfo" transaction-timeout="1800">
         <description></description>
         <out-parameters>
             <parameter name="entityInfoList" type="List"/>
@@ -28,7 +11,7 @@
         </actions>
     </service>
 
-    <service verb="get" noun="EntityFields">
+    <service verb="get" noun="EntityFields" transaction-timeout="1800">
         <description></description>
         <in-parameters>
             <parameter name="entityName" required="true"/>
@@ -43,7 +26,7 @@
         </actions>
     </service>
 
-    <service verb="get" noun="EntityRelationships">
+    <service verb="get" noun="EntityRelationships" transaction-timeout="1800">
         <description></description>
         <in-parameters>
             <parameter name="entityName" required="true"/>
@@ -60,6 +43,46 @@
                 <if condition="relInfo.isAutoReverse"><continue/></if>
                 <script>relationshipList.add(relInfo.relatedEntityName)</script>
             </iterate>
+        </actions>
+    </service>
+
+    <!-- TODO add comments and descriptions wherever required -->
+    <service verb="get" noun="DataDocumentReport" transaction-timeout="1800">
+        <description>Service to fetch data from the Data Document Report.</description>
+        <in-parameters>
+            <parameter name="dataDocumentId" required="true"/>
+        </in-parameters>
+        <out-parameters>
+            <parameter name="entityValueList" type="List"/>
+        </out-parameters>
+        <actions>
+            <set field="entityName" from="'DataDocument.' + dataDocumentId"/>
+            <!-- TODO test with search form inputs -->
+            <entity-find entity-name="${entityName}" list="entityValueList" cache="false">
+                <search-form-inputs/></entity-find>
+        </actions>
+    </service>
+
+    <service verb="delete" noun="DataDocument" transaction-timeout="1800">
+        <in-parameters>
+            <parameter name="dataDocumentId"/>
+        </in-parameters>
+        <actions>
+            <entity-delete-by-condition entity-name="moqui.entity.document.DataDocumentUserGroup">
+                <econdition field-name="dataDocumentId"/>
+            </entity-delete-by-condition>
+
+            <entity-delete-by-condition entity-name="moqui.entity.document.DataDocumentCondition">
+                <econdition field-name="dataDocumentId"/>
+            </entity-delete-by-condition>
+
+            <entity-delete-by-condition entity-name="moqui.entity.document.DataDocumentField">
+                <econdition field-name="dataDocumentId"/>
+            </entity-delete-by-condition>
+
+            <entity-delete-by-condition entity-name="moqui.entity.document.DataDocument">
+                <econdition field-name="dataDocumentId"/>
+            </entity-delete-by-condition>
         </actions>
     </service>
 </services>

@@ -15,6 +15,9 @@
             <method type="put">
                 <service name="org.moqui.impl.EntityServices.update#DataDocument"/>
             </method>
+            <method type="delete">
+                <service name="co.hotwax.reports.ReportServices.delete#DataDocument"/>
+            </method>
 
             <resource name="fields">
                 <method type="get">
