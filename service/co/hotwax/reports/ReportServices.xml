@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-3.xsd">
 
+    <!-- TODO add descriptions of services, in/out params etc -->
+
     <service verb="get" noun="AllEntityInfo" transaction-timeout="1800">
         <description></description>
         <out-parameters>
@@ -46,20 +48,21 @@
         </actions>
     </service>
 
-    <!-- TODO add comments and descriptions wherever required -->
     <service verb="get" noun="DataDocumentReport" transaction-timeout="1800">
         <description>Service to fetch data from the Data Document Report.</description>
         <in-parameters>
             <parameter name="dataDocumentId" required="true"/>
+            <parameter name="pageIndex" type="Integer" default-value="0"/>
+            <parameter name="pageSize" type="Integer" default-value="30"/>
         </in-parameters>
         <out-parameters>
             <parameter name="entityValueList" type="List"/>
         </out-parameters>
         <actions>
             <set field="entityName" from="'DataDocument.' + dataDocumentId"/>
-            <!-- TODO test with search form inputs -->
             <entity-find entity-name="${entityName}" list="entityValueList" cache="false">
-                <search-form-inputs/></entity-find>
+                <search-form-inputs/>
+            </entity-find>
         </actions>
     </service>
 
