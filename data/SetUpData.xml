@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entity-facade-xml type="ext-seed">
+
+    <artifactGroups artifactGroupId="REPORT_API" description="Report Admin API (via root resource)">
+        <artifacts artifactTypeEnumId="AT_REST_PATH" inheritAuthz="Y" artifactName="/report-builder"/>
+        <!-- Full permissions for the ADMIN user group -->
+        <authz artifactAuthzId="REPORT_API" userGroupId="ADMIN" authzTypeEnumId="AUTHZT_ALWAYS" authzActionEnumId="AUTHZA_ALL"/>
+    </artifactGroups>
+
+</entity-facade-xml>
